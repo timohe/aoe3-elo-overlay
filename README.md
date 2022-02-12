@@ -16,6 +16,4 @@ The app is completely separate of the game and uses text recognition. It will no
 * Supported are only 16:9 screen ratios.
 * The app needs to be opened manually while on the loading screen and closed after.
 
-## Open todos
-* See the projects tab for ideas and work in progress https://github.com/timohe/aoe4-overlay/projects
 
