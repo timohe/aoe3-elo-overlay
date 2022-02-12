@@ -1,0 +1,50 @@
+.container {
+    height: 100%;
+    margin-left: 0;
+    max-width: 300;
+    -webkit-background-size: cover;
+    /* pour anciens Chrome et Safari */
+    background-size: cover;
+    /* version standardisée */
+    background-color: transparent;
+}
+
+h1 {
+    color: rgb(255, 223, 145);
+    font-family: "maiola", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+h3 {
+    color: rgb(255, 223, 145);
+    font-family: "maiola", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+p {
+    font-family: "noto-sans", sans-serif;
+    color: #e2e2e2;
+}
+
+.button {
+    color: #ffdb88;
+    font-weight: 400;
+    background-color: #121520;
+    font-family: "maiola", serif;
+    border: none;
+    // color: #c4c4c4;
+    padding: 10px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1em;
+    margin: 0px 0px;
+    cursor: pointer;
+}
+
+button:disabled,
+button[disabled] {
+    background-color: #191d2c;
+}

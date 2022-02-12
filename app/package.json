@@ -1,0 +1,17 @@
+{
+	"name": "aoe4_overlay",
+	"version": "0.0.1",
+	"description": "Overlay for Age of Empires 4",
+	"homepage": "https://github.com/maximegris/angular-electron",
+	"author": {
+		"name": "Timo Hegnauer",
+		"email": "t.hegnauer+aoe@gmail.com"
+	},
+	"main": "main.js",
+	"private": true,
+	"dependencies": {
+		"@electron/remote": "1.2.0",
+		"fs": "^0.0.1-security",
+		"sharp": "^0.29.2"
+	}
+}
