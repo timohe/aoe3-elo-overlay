@@ -57,24 +57,9 @@ export class HomeComponent implements OnInit {
 			}
 			
 		}
-		const nrPlayers = playerNames.filter(Boolean).length;
-		if (nrPlayers > 6){
-			for (const name of playerNames) {
-				this.playerStats.push(this.addNotFound(await this.getStatsFromName(name, GameMode.vs4)));
-			}
-		} else if (nrPlayers > 4){
-			for (const name of playerNames) {
-				this.playerStats.push(this.addNotFound(await this.getStatsFromName(name, GameMode.vs3)));
-			};
-		} else if (nrPlayers > 2) {
-			for (const name of playerNames) {
-				this.playerStats.push(this.addNotFound(await this.getStatsFromName(name, GameMode.vs2)));
-			};
-		} else {
-			for (const name of playerNames) {
-				this.playerStats.push(this.addNotFound(await this.getStatsFromName(name, GameMode.vs1)));
-			};
-		}
+		for (const name of playerNames) {
+			this.playerStats.push(this.addNotFound(await this.getStatsFromName(name)));
+		};
 		this.calcInProgress = false;
 		console.log(this.playerStats);
 	}
@@ -87,7 +72,6 @@ export class HomeComponent implements OnInit {
 			buffer = await this.getScreenshot();
 		}
 		let cropped = await this.cropPicture(buffer, this.nameWidth, this.nameHeight, this.nameXOffset, this.nameYOffset[playerNumber]);
-		// eslint-disable-next-line max-len
 		if (enhanceImage){
 			cropped = await this.improveImage(cropped);
 		}
@@ -95,24 +79,8 @@ export class HomeComponent implements OnInit {
 		return await this.recognizeTextFromBuffer(cropped);
 	}
 
-	async getStatsFromName(playerName: string, preferredGameMode: GameMode): Promise<PlayerStats>{
-		let stats = await this.getPlayerStatsFromApi(playerName, preferredGameMode);
-		if (stats && stats.count && stats.count === 1) {
-			return stats.items[0];
-		}
-		stats = await this.getPlayerStatsFromApi(playerName, GameMode.vs3);
-		if (stats && stats.count && stats.count === 1) {
-			return stats.items[0];
-		}
-		stats = await this.getPlayerStatsFromApi(playerName, GameMode.vs2);
-		if (stats && stats.count && stats.count === 1) {
-			return stats.items[0];
-		}
-		stats = await this.getPlayerStatsFromApi(playerName, GameMode.vs1);
-		if (stats && stats.count && stats.count === 1) {
-			return stats.items[0];
-		}
-		stats = await this.getPlayerStatsFromApi(playerName, GameMode.vs4);
+	async getStatsFromName(playerName: string): Promise<PlayerStats>{
+		let stats = await this.getPlayerStatsFromApi(playerName);
 		if (stats && stats.count && stats.count === 1) {
 			return stats.items[0];
 		}
@@ -175,7 +143,7 @@ export class HomeComponent implements OnInit {
 		return Buffer.from(screenshot);
 	}
 
-	async getPlayerStatsFromApi(playerName: string, mode: string) {
+	async getPlayerStatsFromApi(playerName: string) {
 		const trimmedPlayerName = playerName.trim();
 		if (playerName === ''){
 			return;
@@ -206,10 +174,10 @@ export class HomeComponent implements OnInit {
 				gameId: 'not found',
 				userId: 'not found',
 				rlUserId: 0,
-				userName: 'not found',
+				userName: '[not found]',
 				avatarUrl: 'not found',
 				playerNumber: 'not found',
-				elo: '',
+				elo: '-',
 				eloRating: 0,
 				rank: 0,
 				region: 0,
