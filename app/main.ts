@@ -18,17 +18,17 @@ function createWindow(): BrowserWindow {
 	const size = electronScreen.getPrimaryDisplay().workAreaSize;
 	let scaleFactor = size.width / 2560
 
-	let xOffset = 520;
-	let yOffset = 287;
-	let dispHeight = 900;
-	let dispMinHeight = 900;
-	let dispMaxWidth = 300;
+	// let xOffset = 520;
+	// let yOffset = 287;
+	// let dispHeight = 900;
+	// let dispMinHeight = 900;
+	// let dispMaxWidth = 600;
 
-	xOffset = Math.round(xOffset * scaleFactor);
-	yOffset = Math.round(yOffset * scaleFactor);
-	dispHeight = Math.round(dispHeight * scaleFactor);
-	dispMinHeight = Math.round(dispMinHeight * scaleFactor);
-	dispMaxWidth = Math.round(dispMaxWidth * scaleFactor);
+	// xOffset = Math.round(xOffset * scaleFactor);
+	// yOffset = Math.round(yOffset * scaleFactor);
+	// dispHeight = Math.round(dispHeight * scaleFactor);
+	// dispMinHeight = Math.round(dispMinHeight * scaleFactor);
+	// dispMaxWidth = Math.round(600 * scaleFactor);
 	
 
 	// Create the browser window.
@@ -36,7 +36,7 @@ function createWindow(): BrowserWindow {
 		// icon: path.join(__dirname, iconPath),
 		// x: xOffset,
 		// y: yOffset,
-		// width: 400,
+		width: Math.round(600 * scaleFactor),
 		// height: dispHeight,
 		// minHeight: dispMinHeight,
 		// maxHeight: 400,
