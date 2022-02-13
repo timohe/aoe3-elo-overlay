@@ -34,18 +34,18 @@ function createWindow(): BrowserWindow {
 	// Create the browser window.
 	win = new BrowserWindow({
 		// icon: path.join(__dirname, iconPath),
-		x: xOffset,
-		y: yOffset,
+		// x: xOffset,
+		// y: yOffset,
 		// width: 400,
-		height: dispHeight,
-		minHeight: dispMinHeight,
+		// height: dispHeight,
+		// minHeight: dispMinHeight,
 		// maxHeight: 400,
 		// minWidth: 200,
-		maxWidth: dispMaxWidth,
-		transparent: true,
+		// maxWidth: dispMaxWidth,
+		transparent: false,
 		alwaysOnTop: true,
 		// it will not be transparent if there is a frame
-		frame: false,
+		frame: true,
 		autoHideMenuBar: true,
 		webPreferences: {
 			nodeIntegration: true,

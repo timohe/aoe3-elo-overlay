@@ -17,13 +17,13 @@ import { StaticSymbol } from '@angular/compiler';
 })
 export class HomeComponent implements OnInit {
 	// data for 1440p screens
-	nameXOffset = 2240;
+	nameXOffset = 2140;
 	nameYOffset = [240, 273, 306, 339, 372, 405, 438, 471];
-	nameWidth = 180;
+	nameWidth = 270;
 	nameHeight = 21;
 	playerStats: Array<PlayerStats> = [];
 	calcInProgress = false;
-	fakeInput = true;
+	fakeInput = false;
 	scaleFactor = 1;
 
 	constructor(private httpClient: HttpClient, private native: ElectronService) {
@@ -48,7 +48,14 @@ export class HomeComponent implements OnInit {
 		this.calcInProgress = true;
 		for (let i = 0; i < this.nameYOffset.length; i++) {
 			const playerName = await this.getPlayerNameFromScreenshot(i, this.fakeInput, true);
-			playerNames.push(playerName);
+			// log directly to console
+			// process.stdout.write(`This is the data: ` + playerName)
+			if (playerName.includes("]")){
+				playerNames.push(playerName.split(']')[1]);
+			} else {
+				playerNames.push(playerName);
+			}
+			
 		}
 		const nrPlayers = playerNames.filter(Boolean).length;
 		if (nrPlayers > 6){
@@ -215,20 +222,5 @@ export class HomeComponent implements OnInit {
 		else {
 			return stat;
 		}
-	}
-	styleTd(){
-		const paddingRight = `${30 * this.scaleFactor}px`;
-		const lineHeight = `${80 * this.scaleFactor}px`;
-		const fontSize = `${30 * this.scaleFactor}px`;
-		return {
-			'padding-right': paddingRight,
-			'font-size': fontSize,
-			// 'padding-bottom': paddingBottom,
-			'margin-top': '0',
-			'font-family': '"maiola", serif',
-			'font-weight': '400',
-			color: '#ffdb88',
-			height: lineHeight
-		};
 	}
 }

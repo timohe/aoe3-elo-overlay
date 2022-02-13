@@ -1,31 +1,32 @@
 .container {
-    height: 100%;
-    margin-left: 0;
-    max-width: 300;
-    -webkit-background-size: cover;
-    /* pour anciens Chrome et Safari */
-    background-size: cover;
-    /* version standardisée */
-    background-color: transparent;
+    // height: 100%;
+    // margin-left: 0;
+    // max-width: 300;
+    // -webkit-background-size: cover;
+    // /* pour anciens Chrome et Safari */
+    // background-size: cover;
+    // /* version standardisée */
+    // background-color: transparent;
 }
 
 h1 {
-    color: rgb(255, 223, 145);
-    font-family: "maiola", serif;
-    font-weight: 700;
-    font-style: normal;
+    // color: rgb(255, 223, 145);
+    // font-family: "maiola", serif;
+    // font-weight: 700;
+    // font-style: normal;
 }
 
 h3 {
-    color: rgb(255, 223, 145);
-    font-family: "maiola", serif;
-    font-weight: 700;
-    font-style: normal;
+    // color: rgb(255, 223, 145);
+    // font-family: "maiola", serif;
+    // font-weight: 700;
+    // font-style: normal;
 }
 
-p {
+td {
     font-family: "noto-sans", sans-serif;
-    color: #e2e2e2;
+    color: black;
+    font-size: 1em;
 }
 
 .button {

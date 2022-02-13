@@ -1,19 +1,24 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <div class="container">
-	
-	<tr *ngFor="let stat of playerStats">
-		<td [ngStyle]="styleTd()" *ngIf="stat">
-			{{stat?.elo}}
-		</td>
-		<td *ngIf="stat && stat?.elo !==''" [ngStyle]="styleTd()">
-			{{stat?.winPercent | number: '1.0-0'}}%
-		</td>
-	</tr>
 
 	<button class="button" [disabled]="calcInProgress" (click)="getStatsForAll()">Start
 		<i *ngIf="calcInProgress" class="fa fa-spinner fa-spin"></i>
 	</button>
 	<!-- <button class="button" (click)="toggleFakeInput()">Fake Input: {{fakeInput}}</button> -->
-	<button class="button"(click)="closeApp()">Close</button>
+	<button class="button" (click)="closeApp()">Close</button>
+	
+	<tr *ngFor="let stat of playerStats">
+		<td *ngIf="stat">
+			{{stat?.userName}}
+		</td>
+		<td *ngIf="stat">
+			{{stat?.elo}}
+		</td>
+		<td *ngIf="stat && stat?.elo !==''">
+			{{stat?.winPercent | number: '1.0-0'}}%
+		</td>
+	</tr>
+
+	
 </div>
