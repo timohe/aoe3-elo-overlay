@@ -47,6 +47,7 @@ function createWindow(): BrowserWindow {
 		// it will not be transparent if there is a frame
 		frame: true,
 		autoHideMenuBar: true,
+		backgroundColor: '#222422',
 		webPreferences: {
 			nodeIntegration: true,
 			allowRunningInsecureContent: (serve) ? true : false,

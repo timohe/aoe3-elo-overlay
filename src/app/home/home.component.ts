@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
 	nameHeight = 21;
 	playerStats: Array<PlayerStats> = [];
 	calcInProgress = false;
-	fakeInput = false;
+	fakeInput = true;
 	scaleFactor = 1;
 
 	constructor(private httpClient: HttpClient, private native: ElectronService) {
@@ -92,7 +92,9 @@ export class HomeComponent implements OnInit {
 			cropped = await this.improveImage(cropped);
 		}
 		await this.savePicture(cropped, playerNumber);
-		return await this.recognizeTextFromBuffer(cropped);
+		// TODO: change back
+		// return await this.recognizeTextFromBuffer(cropped);
+		return "solaire"
 	}
 
 	async getStatsFromName(playerName: string, preferredGameMode: GameMode): Promise<PlayerStats>{

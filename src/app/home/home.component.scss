@@ -1,51 +1,91 @@
+/* Google fonts - Open Sans */
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
+
+/* colors */
+$blue:rgba(79, 192, 210, 1);
+$green:rgba(82, 210, 154, 1);
+$dark-bg:rgba(0, 0, 0, 0.9);
+$light-bg:rgba(255, 255, 255, 0.1);
+$text:rgba(255, 255, 255, 0.9);
+
+/* wrapper */
 .container {
-    // height: 100%;
-    // margin-left: 0;
-    // max-width: 300;
-    // -webkit-background-size: cover;
-    // /* pour anciens Chrome et Safari */
-    // background-size: cover;
-    // /* version standardisée */
-    // background-color: transparent;
+    // width: 100%;
+    // max-width: 1000px;
+    // margin: 20px auto 100px auto;
+    padding: 0;
+    background: $light-bg;
+    color: $text;
+    // overflow: hidden;
+    position: relative;
+    font-family: 'Open Sans', sans-serif;
 }
 
-h1 {
-    // color: rgb(255, 223, 145);
-    // font-family: "maiola", serif;
-    // font-weight: 700;
-    // font-style: normal;
+/* lists */
+.row ul {
+    margin: 0;
+    padding: 0;
 }
 
-h3 {
-    // color: rgb(255, 223, 145);
-    // font-family: "maiola", serif;
-    // font-weight: 700;
-    // font-style: normal;
+.row ul li {
+    margin: 0;
+    font-size: 16px;
+    font-weight: normal;
+    list-style: none;
+    display: inline-block;
+    width: 20%;
+    box-sizing: border-box;
 }
 
-td {
-    font-family: "noto-sans", sans-serif;
-    color: black;
-    font-size: 1em;
+.title ul li {
+    padding: 15px 13px;
+}
+
+.row ul li {
+    padding: 5px 10px;
+}
+
+/* rows */
+.row {
+    // padding: 20px 0;
+    // height: 30px;
+    font-size: 0;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.2s ease-out;
+    border-top: 1px solid darken($light-bg, 100%);
+}
+
+
+.title {
+    background-color: $light-bg;
+    border-left: 3px solid lighten($light-bg, 100%);
+}
+
+.blue {
+    border-left: 3px solid darken($blue, 30%);
+}
+
+.green:hover {
+    border-left: 3px solid $green;
 }
 
 .button {
-    color: #ffdb88;
+    color: $text;
     font-weight: 400;
-    background-color: #121520;
-    font-family: "maiola", serif;
+    background-color: $light-bg;
+    font-family: 'Open Sans', sans-serif;
     border: none;
-    // color: #c4c4c4;
     padding: 10px 25px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 1em;
-    margin: 0px 0px;
+    margin-bottom: 2em;
     cursor: pointer;
 }
 
 button:disabled,
 button[disabled] {
-    background-color: #191d2c;
+    background-color: $dark-bg;
 }
