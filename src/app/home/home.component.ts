@@ -17,9 +17,9 @@ import { StaticSymbol } from '@angular/compiler';
 })
 export class HomeComponent implements OnInit {
 	// data for 1440p screens
-	nameXOffset = 2140;
+	nameXOffset = 2200;
 	nameYOffset = [240, 273, 306, 339, 372, 405, 438, 471];
-	nameWidth = 270;
+	nameWidth = 180;
 	nameHeight = 21;
 	playerStats: Array<PlayerStats> = [];
 	calcInProgress = false;
@@ -75,7 +75,7 @@ export class HomeComponent implements OnInit {
 		if (enhanceImage){
 			cropped = await this.improveImage(cropped);
 		}
-		await this.savePicture(cropped, playerNumber);
+		// await this.savePicture(cropped, playerNumber);
 		return await this.recognizeTextFromBuffer(cropped);
 	}
 
