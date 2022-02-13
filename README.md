@@ -12,6 +12,7 @@ The app is completely separate of the game and uses text recognition. It will no
 
 ## Limitations
 * Cannot recognize special characters
+* Only checks for team ELO
 * Only tested with 1440p resolution
 * Supported are only 16:9 screen ratios.
 * The app needs to be opened manually while on the loading screen and closed after.
