@@ -18,12 +18,12 @@ import { StaticSymbol } from '@angular/compiler';
 export class HomeComponent implements OnInit {
 	// data for 1440p screens
 	nameXOffset = 890;
-	nameYOffset = [530, 530 + 44, 530 + 2 * 44, 530 + 3 * 44, 785 - 2 * 44, 785 - 1 * 44 , 785 + 1 * 44, 785 + 2 * 44, 785 + 3 * 44];
+	nameYOffset = [530, 530 + 44, 530 + 2 * 44, 530 + 3 * 44, 785 - 2 * 44, 785 - 1 * 44, 785 , 785 + 1 * 44, 785 + 2 * 44, 785 + 3 * 44];
 	nameWidth = 300;
 	nameHeight = 30;
 	playerStats: Array<PlayerStats> = [];
 	calcInProgress = false;
-	fakeInput = false;
+	fakeInput = true;
 	scaleFactor = 1;
 
 	constructor(private httpClient: HttpClient, private native: ElectronService) {
@@ -35,9 +35,13 @@ export class HomeComponent implements OnInit {
 		this.scaleFactor = screen.width / 2560;
 		this.nameXOffset = Math.round(this.nameXOffset * this.scaleFactor);
 		// eslint-disable-next-line max-len
-		this.nameYOffset = [Math.round(this.nameXOffset[0] * this.scaleFactor), Math.round(this.nameXOffset[1] * this.scaleFactor), Math.round(this.nameXOffset[2] * this.scaleFactor), Math.round(this.nameXOffset[3] * this.scaleFactor), Math.round(this.nameXOffset[4] * this.scaleFactor), Math.round(this.nameXOffset[5] * this.scaleFactor), Math.round(this.nameXOffset[6] * this.scaleFactor), Math.round(this.nameXOffset[7] * this.scaleFactor)];
+		let scaledNameYOffset = [];
+		this.nameYOffset.forEach(coordinate => {
+			scaledNameYOffset.push(Math.round(coordinate + this.scaleFactor))
+		});
 		this.nameWidth = Math.round(this.nameWidth * this.scaleFactor);
 		this.nameHeight = Math.round(this.nameHeight * this.scaleFactor);
+		this.nameYOffset = scaledNameYOffset;
 	}
 
 	// main function to trigger all logic
@@ -110,7 +114,7 @@ export class HomeComponent implements OnInit {
 	}
 
 	async getBufferFromLocalFile(): Promise<Buffer> {
-		const result = await this.native.fs.promises.readFile('./src/assets/test-screenshot/screen.jpg');
+		const result = await this.native.fs.promises.readFile('./src/assets/test-screenshot/4v4.jpg');
 		return Buffer.from(result);
 	}
 
