@@ -17,10 +17,10 @@ import { StaticSymbol } from '@angular/compiler';
 })
 export class HomeComponent implements OnInit {
 	// data for 1440p screens
-	nameXOffset = 2180;
-	nameYOffset = [240, 273, 306, 339, 372, 405, 438, 471];
-	nameWidth = 188;
-	nameHeight = 24;
+	nameXOffset = 890;
+	nameYOffset = [530, 530 + 44, 530 + 2 * 44, 530 + 3 * 44, 785 - 2 * 44, 785 - 1 * 44 , 785 + 1 * 44, 785 + 2 * 44, 785 + 3 * 44];
+	nameWidth = 300;
+	nameHeight = 30;
 	playerStats: Array<PlayerStats> = [];
 	calcInProgress = false;
 	fakeInput = false;
@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit {
 		for (let i = 0; i < this.nameYOffset.length; i++) {
 			const playerName = await this.getPlayerNameFromScreenshot(i, this.fakeInput, true);
 			// log directly to console
-			// process.stdout.write(`This is the data: ` + playerName)
+			process.stdout.write(`Playername: ` + playerName)
 			if (playerName.includes("]")){
 				playerNames.push(playerName.split(']')[1]);
 			} else {
