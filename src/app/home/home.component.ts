@@ -25,6 +25,7 @@ export class HomeComponent implements OnInit {
 	calcInProgress = false;
 	fakeInput = false;
 	scaleFactor = 1;
+	isScreenshotTaken = false;
 
 	constructor(private httpClient: HttpClient, private native: ElectronService) {
 	}
@@ -66,6 +67,7 @@ export class HomeComponent implements OnInit {
 			this.playerStats.push(await this.getStatsFromName(name));
 		};
 		this.calcInProgress = false;
+		this.isScreenshotTaken = false;
 		console.log(this.playerStats);
 	}
 
@@ -80,6 +82,7 @@ export class HomeComponent implements OnInit {
 		if (enhanceImage){
 			cropped = await this.improveImage(cropped);
 		}
+		this.isScreenshotTaken = true;
 		// await this.savePicture(cropped, playerNumber);
 		return await this.recognizeTextFromBuffer(cropped);
 	}

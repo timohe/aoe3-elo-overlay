@@ -8,6 +8,8 @@
 <!-- <button class="button" (click)="toggleFakeInput()">Fake Input: {{fakeInput}}</button> -->
 <button class="button" (click)="closeApp()">Minimize</button>
 
+
+
 <div class="container">
 	<!-- Row title -->
 	<div class="row title">
@@ -25,4 +27,5 @@
 			<li *ngIf="stat && stat?.elo !==''">{{stat?.winPercent | number: '1.0-0'}}%</li>
 		</ul>
 	</div>
+	<p *ngIf="isScreenshotTaken">Screenshot taken. Processing...</p>
 </div>
