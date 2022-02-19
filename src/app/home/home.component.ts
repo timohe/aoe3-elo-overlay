@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
 	nameHeight = 30;
 	playerStats: Array<PlayerStats> = [];
 	calcInProgress = false;
-	fakeInput = true;
+	fakeInput = false;
 	scaleFactor = 1;
 
 	constructor(private httpClient: HttpClient, private native: ElectronService) {
@@ -62,7 +62,8 @@ export class HomeComponent implements OnInit {
 			
 		}
 		for (const name of playerNames) {
-			this.playerStats.push(this.addNotFound(await this.getStatsFromName(name)));
+			// this.playerStats.push(this.addNotFound(await this.getStatsFromName(name)));
+			this.playerStats.push(await this.getStatsFromName(name));
 		};
 		this.calcInProgress = false;
 		console.log(this.playerStats);
@@ -79,7 +80,7 @@ export class HomeComponent implements OnInit {
 		if (enhanceImage){
 			cropped = await this.improveImage(cropped);
 		}
-		await this.savePicture(cropped, playerNumber);
+		// await this.savePicture(cropped, playerNumber);
 		return await this.recognizeTextFromBuffer(cropped);
 	}
 
