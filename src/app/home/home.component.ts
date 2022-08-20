@@ -17,15 +17,18 @@ import { StaticSymbol } from '@angular/compiler';
 })
 export class HomeComponent implements OnInit {
 	// data for 1440p screens
-	nameXOffset = 890;
-	nameYOffset = [530, 530 + 44, 530 + 2 * 44, 530 + 3 * 44, 785 - 2 * 44, 785 - 1 * 44, 785 , 785 + 1 * 44, 785 + 2 * 44, 785 + 3 * 44];
+	nameXOffset = 1993;
+	nameY1st = 136;
+	nameYHeight = 31;
+	nameYOffset = [this.nameY1st, this.nameY1st + 1 * this.nameYHeight, 530 + 2 * 44, 530 + 3 * 44, 785 - 2 * 44, 785 - 1 * 44, 785 , 785 + 1 * 44, 785 + 2 * 44, 785 + 3 * 44];
 	nameWidth = 300;
 	nameHeight = 30;
-	playerStats: Array<PlayerStats> = [];
+	playerStats: Array<PlayerStats | null> = [];
 	calcInProgress = false;
-	fakeInput = false;
+	fakeInput = './src/assets/test-screenshot/1v1.jpg';
 	scaleFactor = 1;
 	isScreenshotTaken = false;
+	debugMode: true;
 
 	constructor(private httpClient: HttpClient, private native: ElectronService) {
 	}
@@ -36,7 +39,7 @@ export class HomeComponent implements OnInit {
 		this.scaleFactor = screen.width / 2560;
 		this.nameXOffset = Math.round(this.nameXOffset * this.scaleFactor);
 		// eslint-disable-next-line max-len
-		let scaledNameYOffset = [];
+		let scaledNameYOffset: Array<number> = [];
 		this.nameYOffset.forEach(coordinate => {
 			scaledNameYOffset.push(Math.round(coordinate + this.scaleFactor))
 		});
@@ -48,7 +51,7 @@ export class HomeComponent implements OnInit {
 	// main function to trigger all logic
 	async getStatsForAll(){
 		// this.setDisplayScaling();
-		const playerNames = [];
+		const playerNames: Array<string> = [];
 		this.playerStats = [];
 		this.calcInProgress = true;
 		for (let i = 0; i < this.nameYOffset.length; i++) {
@@ -57,7 +60,11 @@ export class HomeComponent implements OnInit {
 			process.stdout.write(`Playername: ` + playerName)
 			if (playerName.includes("]")){
 				playerNames.push(playerName.split(']')[1]);
-			} else {
+			} else if (playerName.includes("|")){
+				playerNames.push(playerName.split('|')[1]);
+			}
+			
+			else {
 				playerNames.push(playerName);
 			}
 			
@@ -71,8 +78,8 @@ export class HomeComponent implements OnInit {
 		console.log(this.playerStats);
 	}
 
-	async getPlayerNameFromScreenshot(playerNumber: number, fakeInput: boolean, enhanceImage: boolean): Promise<string> {
-		let buffer = null;
+	async getPlayerNameFromScreenshot(playerNumber: number, fakeInput: string, enhanceImage: boolean): Promise<string> {
+		let buffer: any = null;
 		if (fakeInput){
 			buffer = await this.getBufferFromLocalFile();
 		} else {
@@ -83,14 +90,22 @@ export class HomeComponent implements OnInit {
 			cropped = await this.improveImage(cropped);
 		}
 		this.isScreenshotTaken = true;
-		// await this.savePicture(cropped, playerNumber);
+		await this.savePicture(cropped, playerNumber);
 		return await this.recognizeTextFromBuffer(cropped);
 	}
 
-	async getStatsFromName(playerName: string): Promise<PlayerStats>{
-		let stats = await this.getPlayerStatsFromApi(playerName);
+	async getStatsFromName(playerName: string): Promise<PlayerStats | null>{
+		let stats = await this.getPlayerStatsFromApiTeam(playerName);
 		if (stats && stats.count && stats.count === 1) {
 			return stats.items[0];
+		} else {
+			let stats = await this.getPlayerStatsFromApi1v1(playerName);
+			if (stats && stats.count && stats.count === 1) {
+				return stats.items[0];
+			}
+			else {
+				return null;
+			}
 		}
 	}
 
@@ -118,12 +133,12 @@ export class HomeComponent implements OnInit {
 	}
 
 	async getBufferFromLocalFile(): Promise<Buffer> {
-		const result = await this.native.fs.promises.readFile('./src/assets/test-screenshot/4v4.jpg');
+		const result = await this.native.fs.promises.readFile(this.fakeInput);
 		return Buffer.from(result);
 	}
 
 	async recognizeTextFromBuffer(picture: Buffer): Promise<string> {
-		const text = await Tesseract.recognize(picture, 'eng');
+		const text = await Tesseract.recognize(picture, 'eng+chi_sim');
 		return text.data.text;
 	}
 
@@ -151,7 +166,7 @@ export class HomeComponent implements OnInit {
 		return Buffer.from(screenshot);
 	}
 
-	async getPlayerStatsFromApi(playerName: string) {
+	async getPlayerStatsFromApiTeam(playerName: string) {
 		const trimmedPlayerName = playerName.trim();
 		if (playerName === ''){
 			return;
@@ -165,15 +180,25 @@ export class HomeComponent implements OnInit {
 		}).toPromise();
 	}
 
+	async getPlayerStatsFromApi1v1(playerName: string) {
+		const trimmedPlayerName = playerName.trim();
+		if (playerName === '') {
+			return;
+		}
+		return this.httpClient.post<PlayerApiResponse>(`https://api.ageofempires.com/api/ageiii/Leaderboard`, {
+			region: '7',
+			matchType: '1',
+			searchPlayer: trimmedPlayerName,
+			page: 1,
+			count: 100
+		}).toPromise();
+	}
+
 	closeApp() {
 		const win = remote.getCurrentWindow();
 		win.minimize();
 		this.playerStats = [];
 		// win.close();
-	}
-
-	toggleFakeInput() {
-		this.fakeInput= !this.fakeInput;
 	}
 
 	addNotFound(stat: PlayerStats): PlayerStats{
