@@ -14,11 +14,11 @@ export class HomeComponent implements OnInit {
 	// data for 1440p screens
 	nameXOffset = 2015;
 	nameYHeight = 26;
-	namesYCoordinates = [140, 173, 205, 237]
+	namesYCoordinates = [140, 173, 205, 237, 269, 302]
 	nameWidth = 250;
 	playerStats: Array<PlayerStats> = [];
 	calcInProgress = false;
-	fakeInput = './src/assets/test-screenshot/1v1_1.jpg';
+	fakeInput = './src/assets/test-screenshot/3v3.jpg';
 	scaleFactor = 1;
 	isScreenshotTaken = false;
 	debugMode: true;
@@ -36,6 +36,7 @@ export class HomeComponent implements OnInit {
 		this.playerStats = [];
 		this.calcInProgress = true;
 		for (let i = 0; i < 2*this.mode; i++) {
+			process.stdout.write(`numbver: ` + i)
 			const playerName = await this.getPlayerNameFromScreenshot(i, this.fakeInput, true);
 			// log directly to console
 			// process.stdout.write(`Playername: ` + playerName)
@@ -47,10 +48,8 @@ export class HomeComponent implements OnInit {
 			else {
 				playerNames.push(playerName);
 			}
+			this.playerStats.push(await this.getStatsFromName(playerName));
 		}
-		for (const name of playerNames) {
-			this.playerStats.push(await this.getStatsFromName(name));
-		};
 		this.calcInProgress = false;
 		this.isScreenshotTaken = false;
 		console.log(this.playerStats);
