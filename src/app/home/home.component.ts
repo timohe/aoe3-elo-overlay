@@ -21,7 +21,6 @@ export class HomeComponent implements OnInit {
 	fakeInput = './src/assets/test-screenshot/3v3.jpg';
 	scaleFactor = 1;
 	isScreenshotTaken = false;
-	debugMode: true;
 	mode: number = 2;
 
 	constructor(private httpClient: HttpClient, private native: ElectronService) {
@@ -36,7 +35,6 @@ export class HomeComponent implements OnInit {
 		this.playerStats = [];
 		this.calcInProgress = true;
 		for (let i = 0; i < 2*this.mode; i++) {
-			process.stdout.write(`numbver: ` + i)
 			const playerName = await this.getPlayerNameFromScreenshot(i, this.fakeInput, true);
 			// log directly to console
 			// process.stdout.write(`Playername: ` + playerName)
@@ -48,7 +46,7 @@ export class HomeComponent implements OnInit {
 			else {
 				playerNames.push(playerName);
 			}
-			this.playerStats.push(await this.getStatsFromName(playerName));
+			this.playerStats.push(await this.getStatsFromName(playerNames[i]));
 		}
 		this.calcInProgress = false;
 		this.isScreenshotTaken = false;
@@ -103,13 +101,12 @@ export class HomeComponent implements OnInit {
 			// cropped = await this.improveImage(cropped);
 		}
 		this.isScreenshotTaken = true;
-		this.savePicture(cropped, playerNumber);
+		// this.savePicture(cropped, playerNumber);
 		return await this.recognizeTextFromBuffer(cropped);
 	}
 
 	async getStatsFromName(playerName: string): Promise<PlayerStats>{
 		if(this.mode ===1){
-			process.stdout.write(`triggered 1v1 with ` + playerName)
 			let stats = await this.getPlayerStatsFromApi1v1(playerName);
 			if (stats && stats.count && stats.count === 1) {
 				// Overwrite with recognized name for easier debugging
@@ -120,8 +117,8 @@ export class HomeComponent implements OnInit {
 				return this.addNotFound(playerName);
 			}
 		} else {
-			process.stdout.write(`triggered team with ` + playerName)
 			let stats = await this.getPlayerStatsFromApiTeam(playerName);
+			process.stdout.write(`Playername: ` + playerName)
 			if (stats && stats.count && stats.count === 1) {
 				// Overwrite with recognized name for easier debugging
 				stats.items[0].userName = playerName;
