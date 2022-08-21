@@ -17,22 +17,50 @@ import { StaticSymbol } from '@angular/compiler';
 })
 export class HomeComponent implements OnInit {
 	// data for 1440p screens
-	nameXOffset = 1993;
-	nameY1st = 136;
+	nameXOffset = 2015;
+	nameY1st = 139;
 	nameYHeight = 31;
 	nameYOffset = [this.nameY1st, this.nameY1st + 1 * this.nameYHeight, 530 + 2 * 44, 530 + 3 * 44, 785 - 2 * 44, 785 - 1 * 44, 785 , 785 + 1 * 44, 785 + 2 * 44, 785 + 3 * 44];
-	nameWidth = 300;
+	nameWidth = 250;
 	nameHeight = 30;
-	playerStats: Array<PlayerStats | null> = [];
+	playerStats: Array<PlayerStats> = [];
 	calcInProgress = false;
-	fakeInput = './src/assets/test-screenshot/1v1.jpg';
+	fakeInput = './src/assets/test-screenshot/1v1_2.jpg';
 	scaleFactor = 1;
 	isScreenshotTaken = false;
 	debugMode: true;
+	mode: number = 2;
 
 	constructor(private httpClient: HttpClient, private native: ElectronService) {
 	}
 	ngOnInit(): void {
+	}
+
+	// main function to trigger all logic
+	async getStatsForAll() {
+		// this.setDisplayScaling();
+		const playerNames: Array<string> = [];
+		this.playerStats = [];
+		this.calcInProgress = true;
+		for (let i = 0; i < 2*this.mode; i++) {
+			const playerName = await this.getPlayerNameFromScreenshot(i, this.fakeInput, true);
+			// log directly to console
+			// process.stdout.write(`Playername: ` + playerName)
+			if (playerName.includes("]")) {
+				playerNames.push(playerName.split(']')[1]);
+			} else if (playerName.includes("|")) {
+				playerNames.push(playerName.split('|')[1]);
+			}
+			else {
+				playerNames.push(playerName);
+			}
+		}
+		for (const name of playerNames) {
+			this.playerStats.push(await this.getStatsFromName(name));
+		};
+		this.calcInProgress = false;
+		this.isScreenshotTaken = false;
+		console.log(this.playerStats);
 	}
 
 	setDisplayScaling(){
@@ -48,34 +76,26 @@ export class HomeComponent implements OnInit {
 		this.nameYOffset = scaledNameYOffset;
 	}
 
-	// main function to trigger all logic
-	async getStatsForAll(){
-		// this.setDisplayScaling();
-		const playerNames: Array<string> = [];
-		this.playerStats = [];
-		this.calcInProgress = true;
-		for (let i = 0; i < this.nameYOffset.length; i++) {
-			const playerName = await this.getPlayerNameFromScreenshot(i, this.fakeInput, true);
-			// log directly to console
-			process.stdout.write(`Playername: ` + playerName)
-			if (playerName.includes("]")){
-				playerNames.push(playerName.split(']')[1]);
-			} else if (playerName.includes("|")){
-				playerNames.push(playerName.split('|')[1]);
+	setMode(mode: number) {
+		switch (mode) {
+			case 1: {
+				this.mode = 1;
+				break;
 			}
-			
-			else {
-				playerNames.push(playerName);
+			case 2: {
+				this.mode = 2;
+				break;
 			}
-			
-		}
-		for (const name of playerNames) {
-			// this.playerStats.push(this.addNotFound(await this.getStatsFromName(name)));
-			this.playerStats.push(await this.getStatsFromName(name));
-		};
-		this.calcInProgress = false;
-		this.isScreenshotTaken = false;
-		console.log(this.playerStats);
+			case 3: {
+				this.mode = 3;
+				break;
+			}
+			default: {
+				this.mode = 1;
+				break;
+			}
+		} 
+		
 	}
 
 	async getPlayerNameFromScreenshot(playerNumber: number, fakeInput: string, enhanceImage: boolean): Promise<string> {
@@ -87,24 +107,35 @@ export class HomeComponent implements OnInit {
 		}
 		let cropped = await this.cropPicture(buffer, this.nameWidth, this.nameHeight, this.nameXOffset, this.nameYOffset[playerNumber]);
 		if (enhanceImage){
-			cropped = await this.improveImage(cropped);
+			// cropped = await this.improveImage(cropped);
 		}
 		this.isScreenshotTaken = true;
-		await this.savePicture(cropped, playerNumber);
+		this.savePicture(cropped, playerNumber);
 		return await this.recognizeTextFromBuffer(cropped);
 	}
 
-	async getStatsFromName(playerName: string): Promise<PlayerStats | null>{
-		let stats = await this.getPlayerStatsFromApiTeam(playerName);
-		if (stats && stats.count && stats.count === 1) {
-			return stats.items[0];
-		} else {
+	async getStatsFromName(playerName: string): Promise<PlayerStats>{
+		if(this.mode ===1){
+			process.stdout.write(`triggered 1v1 with ` + playerName)
 			let stats = await this.getPlayerStatsFromApi1v1(playerName);
 			if (stats && stats.count && stats.count === 1) {
+				// Overwrite with recognized name for easier debugging
+				stats.items[0].userName = playerName;
 				return stats.items[0];
 			}
 			else {
-				return null;
+				return this.addNotFound(playerName);
+			}
+		} else {
+			process.stdout.write(`triggered team with ` + playerName)
+			let stats = await this.getPlayerStatsFromApiTeam(playerName);
+			if (stats && stats.count && stats.count === 1) {
+				// Overwrite with recognized name for easier debugging
+				stats.items[0].userName = playerName;
+				return stats.items[0];
+			}
+			else {
+				return this.addNotFound(playerName);
 			}
 		}
 	}
@@ -127,7 +158,7 @@ export class HomeComponent implements OnInit {
 		const greyscale = await this.native.sharp(picture)
 			.threshold(100)
 			.negate({ alpha: false })
-			.blur(0.5)
+			// .blur(0.5)
 			.toBuffer();
 		return greyscale;
 	}
@@ -149,10 +180,9 @@ export class HomeComponent implements OnInit {
 		return cropped;
 	}
 
-	// eslint-disable-next-line max-len
 	async savePicture(picture: Buffer, playerNumber: number) {
 		await this.native.sharp(picture)
-			.toFile(`./src/assets/test-screenshot/picture_cropped_${playerNumber}.png`);
+			.toFile(`./src/assets/test-output/picture_cropped_${playerNumber}.png`);
 	}
 
 	async getScreenshot(): Promise<Buffer> {
@@ -201,27 +231,22 @@ export class HomeComponent implements OnInit {
 		// win.close();
 	}
 
-	addNotFound(stat: PlayerStats): PlayerStats{
-		if(!stat){
-			return {
-				gameId: 'not found',
-				userId: 'not found',
-				rlUserId: 0,
-				userName: '[not found]',
-				avatarUrl: 'not found',
-				playerNumber: 'not found',
-				elo: '-',
-				eloRating: 0,
-				rank: 0,
-				region: 0,
-				wins: 0,
-				winPercent: '',
-				losses: 0,
-				winStreak: 0,
-			};
-		}
-		else {
-			return stat;
-		}
+	addNotFound(playerName: string): PlayerStats{
+		return {
+			gameId: 'not found',
+			userId: 'not found',
+			rlUserId: 0,
+			userName: playerName,
+			avatarUrl: 'not found',
+			playerNumber: 'not found',
+			elo: 'not found',
+			eloRating: 0,
+			rank: 0,
+			region: 0,
+			wins: 0,
+			winPercent: '-',
+			losses: 0,
+			winStreak: 0,
+		};
 	}
 }

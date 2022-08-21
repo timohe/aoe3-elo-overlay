@@ -7,6 +7,7 @@ $green:rgba(82, 210, 154, 1);
 $dark-bg:rgba(0, 0, 0, 0.9);
 $light-bg:rgba(255, 255, 255, 0.1);
 $text:rgba(255, 255, 255, 0.9);
+$text-disabled:rgba(255, 255, 255, 0.349);
 
 /* wrapper */
 .container {
@@ -66,6 +67,21 @@ $text:rgba(255, 255, 255, 0.9);
 
 .button {
     color: $text;
+    font-weight: 400;
+    background-color: $light-bg;
+    font-family: 'Open Sans', sans-serif;
+    border: none;
+    padding: 10px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1em;
+    margin-bottom: 2em;
+    cursor: pointer;
+}
+
+.button-grey {
+	color: $text-disabled;
     font-weight: 400;
     background-color: $light-bg;
     font-family: 'Open Sans', sans-serif;

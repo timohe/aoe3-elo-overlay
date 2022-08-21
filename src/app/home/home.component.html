@@ -8,6 +8,9 @@
 <!-- <button class="button" (click)="toggleFakeInput()">Fake Input: {{fakeInput}}</button> -->
 <button class="button" (click)="closeApp()">Minimize</button>
 
+<button (click)="setMode(1)" [ngClass]="mode === 1 ? 'button' : 'button-grey'" >1v1</button>
+<button (click)="setMode(2)" [ngClass]="mode === 2 ? 'button' : 'button-grey'">2v2</button>
+<button (click)="setMode(3)" [ngClass]="mode === 3 ? 'button' : 'button-grey'">3v3</button>
 
 
 <div class="container">
@@ -24,7 +27,8 @@
 		<ul *ngFor="let stat of playerStats">
 			<li *ngIf="stat">{{stat?.userName}}</li>
 			<li *ngIf="stat">{{stat?.elo}}</li>
-			<li *ngIf="stat && stat?.elo !==''">{{stat?.winPercent | number: '1.0-0'}}%</li>
+			<li *ngIf="stat && stat?.elo !=='' && stat?.winPercent != '-'">{{stat?.winPercent | number: '1.0-0'}}%</li>
+			<li *ngIf="stat && stat?.elo !=='' && stat?.winPercent === '-'">-</li>
 		</ul>
 	</div>
 	<p *ngIf="isScreenshotTaken">Screenshot taken. Processing...</p>

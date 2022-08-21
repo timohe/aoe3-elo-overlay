@@ -10,16 +10,11 @@
 	"keywords": [
 		"aoe3",
 		"angular",
-		"angular 12",
 		"electron",
 		"nodejs",
 		"typescript",
-		"spectron",
 		"eslint",
-		"sass",
-		"windows",
-		"mac",
-		"linux"
+		"windows"
 	],
 	"main": "app/main.js",
 	"private": true,
