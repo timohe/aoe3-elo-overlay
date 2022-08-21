@@ -1,14 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { electron } from 'process';
 import Tesseract from 'tesseract.js';
 import { desktopCapturer, remote } from 'electron';
 import { ElectronService } from '../core/services/index';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
 import { PlayerApiResponse, PlayerStats, GameMode } from '../types';
-import { StaticSymbol } from '@angular/compiler';
 
 @Component({
 	selector: 'app-home',
@@ -18,14 +13,12 @@ import { StaticSymbol } from '@angular/compiler';
 export class HomeComponent implements OnInit {
 	// data for 1440p screens
 	nameXOffset = 2015;
-	nameY1st = 139;
-	nameYHeight = 31;
-	nameYOffset = [this.nameY1st, this.nameY1st + 1 * this.nameYHeight, 530 + 2 * 44, 530 + 3 * 44, 785 - 2 * 44, 785 - 1 * 44, 785 , 785 + 1 * 44, 785 + 2 * 44, 785 + 3 * 44];
+	nameYHeight = 26;
+	namesYCoordinates = [140, 173, 205, 237]
 	nameWidth = 250;
-	nameHeight = 30;
 	playerStats: Array<PlayerStats> = [];
 	calcInProgress = false;
-	fakeInput = './src/assets/test-screenshot/1v1_2.jpg';
+	fakeInput = './src/assets/test-screenshot/1v1_1.jpg';
 	scaleFactor = 1;
 	isScreenshotTaken = false;
 	debugMode: true;
@@ -63,17 +56,18 @@ export class HomeComponent implements OnInit {
 		console.log(this.playerStats);
 	}
 
+	// TODO:
 	setDisplayScaling(){
 		this.scaleFactor = screen.width / 2560;
 		this.nameXOffset = Math.round(this.nameXOffset * this.scaleFactor);
 		// eslint-disable-next-line max-len
 		let scaledNameYOffset: Array<number> = [];
-		this.nameYOffset.forEach(coordinate => {
+		this.namesYCoordinates.forEach(coordinate => {
 			scaledNameYOffset.push(Math.round(coordinate + this.scaleFactor))
 		});
 		this.nameWidth = Math.round(this.nameWidth * this.scaleFactor);
-		this.nameHeight = Math.round(this.nameHeight * this.scaleFactor);
-		this.nameYOffset = scaledNameYOffset;
+		this.nameYHeight = Math.round(this.nameYHeight * this.scaleFactor);
+		this.namesYCoordinates = scaledNameYOffset;
 	}
 
 	setMode(mode: number) {
@@ -105,7 +99,7 @@ export class HomeComponent implements OnInit {
 		} else {
 			buffer = await this.getScreenshot();
 		}
-		let cropped = await this.cropPicture(buffer, this.nameWidth, this.nameHeight, this.nameXOffset, this.nameYOffset[playerNumber]);
+		let cropped = await this.cropPicture(buffer, this.nameWidth, this.nameYHeight, this.nameXOffset, this.namesYCoordinates[playerNumber]);
 		if (enhanceImage){
 			// cropped = await this.improveImage(cropped);
 		}
