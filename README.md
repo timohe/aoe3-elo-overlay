@@ -1,20 +1,26 @@
 # AoE 3 ELO Overlay
 
 If you are curious about the ELO of people you play against, this is the app for you.
-
 - Recognizes player names on the quickmatch waiting screen 
-- Shows the result in an overlay alongside the players names
+- Shows the result in an overlay
 
 The app is completely separate of the game and uses text recognition. It will not affect or change any game files.
 
+## How it works
+* Once you are in a game, just start the app, chose game mode (1v1, 2v2, 3v3) and click start.
+* The app will then show you the ELO ranking and winrates of the players
+* Data source is the official Age of Empires page
+
+## Prerequisites
+* Unfortunately the game UI is build with a lot of dynamic resizing, so OCR struggles with that
+* To solve the problem I created a little UI mod which makes the name position static and also changes the names to be black on white
+
 ## Installation
-* This is a portable exe, so no installation is needed.
+* Use the .msi to install it or use the .exe to run it without installation 
 
 ## Limitations
-* Cannot recognize special characters
-* Only checks for team ELO
+* Struggles with special charactes, non-english languages
 * Only tested with 1440p resolution
 * Supported are only 16:9 screen ratios.
-* The app needs to be opened manually while on the loading screen and closed after.
 
 
