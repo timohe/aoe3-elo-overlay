@@ -17,6 +17,7 @@ This app is completely separate of the game and uses text recognition. It will n
 * This application will only work with the mod installed. Multiplayer is still possible.
 
 ## Installation
+* Click on "Releases" on the right to get to the download of the current version
 * Use the .msi to install it or use the .exe to run it without installation 
 
 ## Limitations
