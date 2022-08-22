@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
 	isScreenshotTaken = false;
 	mode: number = 2;
 	// For local testing
-	debugMode = true;
+	debugMode = false;
 	fakeInput = './src/assets/test-screenshot/3v3_1440p.jpg';
 	
 

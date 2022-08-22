@@ -4,7 +4,7 @@ If you are curious about the ELO of people you play against, this is the app for
 - Recognizes player names on the quickmatch waiting screen 
 - Shows the result in an overlay
 
-The app is completely separate of the game and uses text recognition. It will not affect or change any game files.
+This app is completely separate of the game and uses text recognition. It will not affect or change any game files.
 
 ## How it works
 * Once you are in a game, just start the app, chose game mode (1v1, 2v2, 3v3) and click start.
@@ -21,7 +21,7 @@ The app is completely separate of the game and uses text recognition. It will no
 
 ## Limitations
 * Struggles with special charactes, non-english languages
-* Only tested with 1440p resolution
-* Supported are only 16:9 screen ratios.
+* Should work with all 16:9 screen ratios, tested with 1440p and 1080p
+* Game must run in full screen mode
 
 
