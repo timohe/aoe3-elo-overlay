@@ -37,8 +37,14 @@ export class HomeComponent implements OnInit {
 		const playerNames: Array<string> = [];
 		this.playerStats = [];
 		this.calcInProgress = true;
+		let buffer: any = null;
+		if (this.debugMode) {
+			buffer = await this.getBufferFromLocalFile();
+		} else {
+			buffer = await this.getScreenshot();
+		}
 		for (let i = 0; i < 2*this.mode; i++) {
-			const playerName = await this.getPlayerNameFromScreenshot(i);
+			const playerName = await this.getPlayerNameFromScreenshot(i, buffer);
 			if (playerName.includes("]")) {
 				playerNames.push(playerName.split(']')[1]);
 			} else if (playerName.includes("|")) {
@@ -89,13 +95,8 @@ export class HomeComponent implements OnInit {
 		
 	}
 
-	async getPlayerNameFromScreenshot(playerNumber: number): Promise<string> {
-		let buffer: any = null;
-		if (this.debugMode){
-			buffer = await this.getBufferFromLocalFile();
-		} else {
-			buffer = await this.getScreenshot();
-		}
+	async getPlayerNameFromScreenshot(playerNumber: number, buffer: Buffer): Promise<string> {
+		
 		let cropped = await this.cropPicture(buffer, this.nameWidth, this.nameYHeight, this.nameXOffset, this.namesYCoordinates[playerNumber]);
 		this.isScreenshotTaken = true;
 		if (this.debugMode) {
