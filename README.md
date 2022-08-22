@@ -1,6 +1,6 @@
 # AoE 3 ELO Overlay
 
-If you are curious about the ELO of people you play against, this is the app for you.
+If you are curious about the ELO of people you play against in Age of Empires 3: Definitive Edition, this is the app for you.
 - Recognizes player names on the quickmatch waiting screen 
 - Shows the result in an overlay
 
