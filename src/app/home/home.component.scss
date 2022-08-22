@@ -9,15 +9,22 @@ $light-bg:rgba(255, 255, 255, 0.1);
 $text:rgba(255, 255, 255, 0.9);
 $text-disabled:rgba(255, 255, 255, 0.349);
 
-/* wrapper */
+
+.everything {
+	padding-left: 1.0vw;
+	padding-right: 1.0vw;
+	padding-top: 1.0vw;
+}
+
+.button-container {
+	display: flex;
+	justify-content: space-between;
+}
+
 .container {
-    // width: 100%;
-    // max-width: 1000px;
-    // margin: 20px auto 100px auto;
     padding: 0;
     background: $light-bg;
     color: $text;
-    // overflow: hidden;
     position: relative;
     font-family: 'Open Sans', sans-serif;
 }
@@ -30,7 +37,7 @@ $text-disabled:rgba(255, 255, 255, 0.349);
 
 .row ul li {
     margin: 0;
-    font-size: 1em;
+    font-size: 3.0vw;
     font-weight: normal;
     list-style: none;
     display: inline-block;
@@ -39,11 +46,11 @@ $text-disabled:rgba(255, 255, 255, 0.349);
 }
 
 .title ul li {
-    padding: 15px 13px;
+    padding: 3.0vw 0.6em;
 }
 
 .row ul li {
-    padding: 5px 10px;
+    padding: 0.3em 0.6em;
 }
 
 /* rows */
@@ -71,12 +78,12 @@ $text-disabled:rgba(255, 255, 255, 0.349);
     background-color: $light-bg;
     font-family: 'Open Sans', sans-serif;
     border: none;
-    padding: 10px 25px;
+    padding: 2.2vw 3.0vw;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 1em;
-    margin-bottom: 2em;
+    font-size: 3.1vw;
+    margin-bottom: 1.2em;
     cursor: pointer;
 }
 
@@ -86,12 +93,12 @@ $text-disabled:rgba(255, 255, 255, 0.349);
     background-color: $light-bg;
     font-family: 'Open Sans', sans-serif;
     border: none;
-    padding: 10px 25px;
+    padding: 2.2vw 3.0vw;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 1em;
-    margin-bottom: 2em;
+    font-size: 3.1vw;
+    margin-bottom: 1.2em;
     cursor: pointer;
 }
 
@@ -101,7 +108,7 @@ button[disabled] {
 }
 
 p {
-	padding-left: 1em;
-	padding-bottom: 1em;
-	font-size: 1em;
+	padding-left: 3.0vw;
+	padding-bottom: 3.0vw;
+	font-size: 3.0vw;
 }

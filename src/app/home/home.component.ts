@@ -23,17 +23,17 @@ export class HomeComponent implements OnInit {
 	mode: number = 2;
 	// For local testing
 	debugMode = true;
-	fakeInput = './src/assets/test-screenshot/3v3_1080p.jpg';
+	fakeInput = './src/assets/test-screenshot/3v3_1440p.jpg';
 	
 
 	constructor(private httpClient: HttpClient, private native: ElectronService) {
 	}
 	ngOnInit(): void {
+		this.setDisplayScaling();
 	}
 
 	// main function to trigger all logic
 	async getStatsForAll() {
-		this.setDisplayScaling();
 		const playerNames: Array<string> = [];
 		this.playerStats = [];
 		this.calcInProgress = true;
@@ -98,7 +98,9 @@ export class HomeComponent implements OnInit {
 		}
 		let cropped = await this.cropPicture(buffer, this.nameWidth, this.nameYHeight, this.nameXOffset, this.namesYCoordinates[playerNumber]);
 		this.isScreenshotTaken = true;
-		this.savePicture(cropped, playerNumber);
+		if (this.debugMode) {
+			this.savePicture(cropped, playerNumber);
+		}
 		return await this.recognizeTextFromBuffer(cropped);
 	}
 

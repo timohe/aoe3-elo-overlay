@@ -1,17 +1,24 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+<div class="everything">
 
+
+
+<div class="button-container">
 
 <button class="button" [disabled]="calcInProgress" (click)="getStatsForAll()">Start
 	<i *ngIf="calcInProgress" class="fa fa-spinner fa-spin"></i>
 </button>
 <!-- <button class="button" (click)="toggleFakeInput()">Fake Input: {{fakeInput}}</button> -->
-<button class="button" (click)="closeApp()">Minimize</button>
+<!-- <button class="button" (click)="closeApp()">Minimize</button> -->
 
+<div class="game-modes">
 <button (click)="setMode(1)" [ngClass]="mode === 1 ? 'button' : 'button-grey'" >1v1</button>
 <button (click)="setMode(2)" [ngClass]="mode === 2 ? 'button' : 'button-grey'">2v2</button>
 <button (click)="setMode(3)" [ngClass]="mode === 3 ? 'button' : 'button-grey'">3v3</button>
+</div>
 
+</div>
 
 <div class="container">
 	<!-- Row title -->
@@ -31,5 +38,7 @@
 			<li *ngIf="stat && stat?.elo !=='' && stat?.winPercent === '-'">-</li>
 		</ul>
 	</div>
-	<p *ngIf="isScreenshotTaken">Screenshot taken. Processing...</p>
+	<p *ngIf="isScreenshotTaken">Processing...</p>
+</div>
+
 </div>
