@@ -18,10 +18,13 @@ export class HomeComponent implements OnInit {
 	nameWidth = 250;
 	playerStats: Array<PlayerStats> = [];
 	calcInProgress = false;
-	fakeInput = './src/assets/test-screenshot/3v3.jpg';
 	scaleFactor = 1;
 	isScreenshotTaken = false;
 	mode: number = 2;
+	// For local testing
+	debugMode = true;
+	fakeInput = './src/assets/test-screenshot/3v3_1080p.jpg';
+	
 
 	constructor(private httpClient: HttpClient, private native: ElectronService) {
 	}
@@ -30,14 +33,12 @@ export class HomeComponent implements OnInit {
 
 	// main function to trigger all logic
 	async getStatsForAll() {
-		// this.setDisplayScaling();
+		this.setDisplayScaling();
 		const playerNames: Array<string> = [];
 		this.playerStats = [];
 		this.calcInProgress = true;
 		for (let i = 0; i < 2*this.mode; i++) {
-			const playerName = await this.getPlayerNameFromScreenshot(i, this.fakeInput, true);
-			// log directly to console
-			// process.stdout.write(`Playername: ` + playerName)
+			const playerName = await this.getPlayerNameFromScreenshot(i);
 			if (playerName.includes("]")) {
 				playerNames.push(playerName.split(']')[1]);
 			} else if (playerName.includes("|")) {
@@ -53,14 +54,13 @@ export class HomeComponent implements OnInit {
 		console.log(this.playerStats);
 	}
 
-	// TODO:
 	setDisplayScaling(){
 		this.scaleFactor = screen.width / 2560;
 		this.nameXOffset = Math.round(this.nameXOffset * this.scaleFactor);
 		// eslint-disable-next-line max-len
 		let scaledNameYOffset: Array<number> = [];
 		this.namesYCoordinates.forEach(coordinate => {
-			scaledNameYOffset.push(Math.round(coordinate + this.scaleFactor))
+			scaledNameYOffset.push(Math.round(coordinate * this.scaleFactor))
 		});
 		this.nameWidth = Math.round(this.nameWidth * this.scaleFactor);
 		this.nameYHeight = Math.round(this.nameYHeight * this.scaleFactor);
@@ -89,19 +89,16 @@ export class HomeComponent implements OnInit {
 		
 	}
 
-	async getPlayerNameFromScreenshot(playerNumber: number, fakeInput: string, enhanceImage: boolean): Promise<string> {
+	async getPlayerNameFromScreenshot(playerNumber: number): Promise<string> {
 		let buffer: any = null;
-		if (fakeInput){
+		if (this.debugMode){
 			buffer = await this.getBufferFromLocalFile();
 		} else {
 			buffer = await this.getScreenshot();
 		}
 		let cropped = await this.cropPicture(buffer, this.nameWidth, this.nameYHeight, this.nameXOffset, this.namesYCoordinates[playerNumber]);
-		if (enhanceImage){
-			// cropped = await this.improveImage(cropped);
-		}
 		this.isScreenshotTaken = true;
-		// this.savePicture(cropped, playerNumber);
+		this.savePicture(cropped, playerNumber);
 		return await this.recognizeTextFromBuffer(cropped);
 	}
 
@@ -118,7 +115,6 @@ export class HomeComponent implements OnInit {
 			}
 		} else {
 			let stats = await this.getPlayerStatsFromApiTeam(playerName);
-			process.stdout.write(`Playername: ` + playerName)
 			if (stats && stats.count && stats.count === 1) {
 				// Overwrite with recognized name for easier debugging
 				stats.items[0].userName = playerName;
@@ -240,3 +236,6 @@ export class HomeComponent implements OnInit {
 		};
 	}
 }
+
+// how to log directly to console
+// process.stdout.write(`test ` + test)

@@ -13,7 +13,8 @@ The app is completely separate of the game and uses text recognition. It will no
 
 ## Prerequisites
 * Unfortunately the game UI is build with a lot of dynamic resizing, so OCR struggles with that
-* To solve the problem I created a little UI mod which makes the name position static and also changes the names to be black on white
+* To solve the problem I created a little UI mod which makes the name position static and also changes the names to be black on white. 
+* This application will only work with the mod installed. Multiplayer is still possible.
 
 ## Installation
 * Use the .msi to install it or use the .exe to run it without installation 
